@@ -1,74 +1,220 @@
 /* ===========================
-   Egyszerű Formula 1 stílus
+   Formula–1 dark theme UI
    =========================== */
 
-body {
-  margin: 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background-color: #0d0d0d;
-  color: #f1f1f1;
+:root{
+  --bg:#0b0b0b;
+  --panel:#141414;
+  --panel-2:#1a1a1a;
+  --text:#f1f1f1;
+  --muted:#b9b9b9;
+  --line:#2a2a2a;
+  --accent:#e10600;      /* F1 red */
+  --accent-2:#ff2d00;
+  --ok:#2ecc71;
+  --warn:#f39c12;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;
+  background: radial-gradient(1200px 600px at 50% -10%, #151515 0%, var(--bg) 60%);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* ---------- Typography ---------- */
+h1,h2,h3{margin:0 0 .6rem 0; letter-spacing:.5px}
+h1{
+  color:var(--accent);
+  font-size: clamp(1.8rem, 2vw + 1rem, 2.6rem);
+  text-transform:uppercase;
+}
+p{color:var(--muted); margin:.25rem 0 1.25rem}
+
+/* ---------- Layout / Cover ---------- */
+.cover{
+  max-width:min(1200px, 92vw);
+  margin:2rem auto 3rem;
+  padding:1.25rem 1.5rem;
+  background:linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,.35),
+             0 0 0 1px rgba(225,6,0,.06) inset;
+}
+
+/* subtle divider line helper */
+.hr{height:1px; background:linear-gradient(90deg, transparent, #2b2b2b, transparent); margin:1rem 0}
+
+/* ---------- Navigation ---------- */
+.navigation{
+  display:flex; flex-wrap:wrap; justify-content:center; gap:14px;
+  margin:1.25rem 0 1.75rem;
+}
+.navigation a{
+  text-decoration:none;
+  background:linear-gradient(180deg, var(--accent) 0%, #b50500 100%);
+  color:#fff; padding:.7rem 1.05rem; border-radius:10px;
+  border:1px solid rgba(255,255,255,.08);
+  font-weight:700; letter-spacing:.2px;
+  box-shadow:0 6px 16px rgba(225,6,0,.28);
+  transform:translateZ(0);
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.navigation a:hover{ transform:translateY(-1px); box-shadow:0 10px 22px rgba(225,6,0,.35); background:linear-gradient(180deg, var(--accent-2) 0%, var(--accent) 100%);}
+.navigation a:active{ transform:translateY(0) scale(.98)}
+
+/* ---------- Data table ---------- */
+/* ha szeretnéd vízszintesen görgethető keretben, add a táblát .table-wrap divbe, de nélküle is működik */
+.table-wrap{overflow:auto; border-radius:12px; border:1px solid var(--line); box-shadow:0 8px 20px rgba(0,0,0,.25);}
+table{
+  width:100%; border-collapse:separate; border-spacing:0;
+  background:linear-gradient(180deg, #101010, #0d0d0d);
+}
+caption{
+  caption-side:top; padding:.8rem 1rem; color:var(--muted); text-align:left;
+}
+th,td{
+  padding:.7rem .9rem;
+  border-bottom:1px solid var(--line);
+  white-space:nowrap; text-align:left;
+}
+th{
+  position:sticky; top:0; z-index:2;
+  background:
+    linear-gradient(180deg, #171717 0%, #131313 100%);
+  color:#e9e9e9; font-weight:700;
+  border-bottom:1px solid #2f2f2f;
+  box-shadow:0 2px 0 rgba(0,0,0,.35);
+}
+tbody tr{ transition: background-color .15s ease}
+tbody tr:nth-child(even){ background:rgba(255,255,255,.02)}
+tbody tr:hover{ background:rgba(225,6,0,.08) }
+
+td.num{ text-align:right; font-variant-numeric:tabular-nums}
+td.muted, .muted{ color:var(--muted)}
+
+/* “badge” jelölő (pl. motor / csapat kiemelése) */
+.badge{
+  display:inline-block; padding:.2rem .5rem; border-radius:999px;
+  background:#1f1f1f; border:1px solid #2b2b2b; font-size:.85em; color:#ddd;
+}
+.badge.red{ background:rgba(225,6,0,.12); border-color:rgba(225,6,0,.35); color:#fff}
+
+/* ---------- Helpers ---------- */
+.nowrap{white-space:nowrap}
+.center{text-align:center}
+.right{text-align:right}
+
+/* ---------- Scrollbar (WebKit) ---------- */
+.table-wrap::-webkit-scrollbar{height:10px}
+.table-wrap::-webkit-scrollbar-track{background:#101010; border-radius:10px}
+.table-wrap::-webkit-scrollbar-thumb{background:#2b2b2b; border-radius:10px}
+.table-wrap::-webkit-scrollbar-thumb:hover{background:#3a3a3a}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px){
+  th,td{padding:.55rem .7rem; font-size:.95rem}
+}
+@media (max-width: 600px){
+  .navigation{gap:10px}
+  .navigation a{padding:.55rem .8rem; font-size:.95rem}
+  th,td{padding:.5rem .55rem; font-size:.9rem}
+  .cover{padding:1rem}
+}
+
+
+/* ======= COMMON CONTAINER (navbar & table & lead text) ======= */
+:root{
+  /* állítsd, ha keskenyebb/szélesebb kell */
+  --container: 1050px;
+}
+
+/* a header képe a coverben középre */
+.cover img{
+  display:block;
+  margin: 0 auto;
+}
+
+/* navbar és alatta a cím/szöveg konténerre igazítva */
+.navigation,
+.lead,
+.table-wrap{
+  max-width: var(--container);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* a cím és a bevezető szöveg tényleg középen legyen */
+.lead,
+.lead h1,
+.lead p{
   text-align: center;
 }
 
-/* --- Fő cím --- */
-h1 {
-  color: #e10600; /* F1 piros */
-  font-size: 2.5rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin-top: 50px;
-  margin-bottom: 20px;
+/* ha a cím/szöveg nem .lead-ben van, ez is segít */
+x-mainpage h1,
+x-mainpage p{
+  text-align: center;
 }
 
-/* --- Szöveg --- */
-p {
-  font-size: 1.1rem;
-  color: #cccccc;
-  margin-bottom: 20px;
+/* ======= TABLE LOOK & FEEL ======= */
+
+/* keskenyebb táblázat (a fenti konténerben) */
+.table-wrap{
+  overflow:auto;
+  border-radius:12px;
+  border:1px solid var(--line);
+  box-shadow:0 8px 20px rgba(0,0,0,.25);
 }
 
-/* --- Tartalom terület --- */
-.cover {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background: linear-gradient(180deg, #1a1a1a, #111);
-  border: 1px solid #333;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(225, 6, 0, 0.2);
+/* fejlécek F1 pirosak legyenek (navbar szín) */
+th{
+  position: sticky; top: 0; z-index: 2;
+  background: linear-gradient(180deg, var(--accent) 0%, #b50500 100%) !important;
+  color:#fff !important;
+  border-bottom: 1px solid #8f0b08 !important;
+  box-shadow: 0 2px 0 rgba(0,0,0,.35);
 }
 
-/* --- Navigációs rész --- */
-.navigation {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-top: 30px;
+/* fejlécek betűje legyen picit nagyobb/erősebb */
+th{ font-weight: 800; letter-spacing:.2px; }
+
+/* “zebra” sorok finomabbak maradnak */
+tbody tr:nth-child(even){ background: rgba(255,255,255,.03); }
+tbody tr:hover{ background: rgba(225,6,0,.08); }
+
+/* oszlopok: kicsit szorosabb, hogy elférjen a konténerben */
+th, td{ padding: .6rem .8rem; }
+
+/* mobilon még feszesebb */
+@media (max-width: 900px){
+  :root{ --container: 92vw; }
+  th, td{ padding: .5rem .6rem; font-size:.95rem; }
 }
 
-.navigation a {
-  text-decoration: none;
-  background-color: #e10600;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-weight: bold;
-  transition: background-color 0.2s, transform 0.2s;
+/* ======= KONTÉNER-SZÉLESSÉG (navbar, cím, táblázat) ======= */
+
+/* korábban 1050px volt, most szélesebb, hogy kiférjen minden */
+:root {
+  --container: 1280px; /* vagy 1300px, ha még több hely kell */
 }
 
-.navigation a:hover {
-  background-color: #ff2d00;
-  transform: scale(1.05);
+/* középre igazítás minden fő szekcióhoz */
+.navigation,
+.lead,
+.table-wrap {
+  max-width: var(--container);
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* --- Kis kijelzőkre --- */
-@media (max-width: 600px) {
-  h1 {
-    font-size: 2rem;
-  }
-
-  .navigation a {
-    padding: 8px 15px;
-  }
+/* responsive visszaváltás mobilon */
+@media (max-width: 900px) {
+  :root { --container: 92vw; }
 }
