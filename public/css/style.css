@@ -1,0 +1,74 @@
+/* ===========================
+   Egyszerű Formula 1 stílus
+   =========================== */
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #0d0d0d;
+  color: #f1f1f1;
+  text-align: center;
+}
+
+/* --- Fő cím --- */
+h1 {
+  color: #e10600; /* F1 piros */
+  font-size: 2.5rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+
+/* --- Szöveg --- */
+p {
+  font-size: 1.1rem;
+  color: #cccccc;
+  margin-bottom: 20px;
+}
+
+/* --- Tartalom terület --- */
+.cover {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: linear-gradient(180deg, #1a1a1a, #111);
+  border: 1px solid #333;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(225, 6, 0, 0.2);
+}
+
+/* --- Navigációs rész --- */
+.navigation {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.navigation a {
+  text-decoration: none;
+  background-color: #e10600;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.navigation a:hover {
+  background-color: #ff2d00;
+  transform: scale(1.05);
+}
+
+/* --- Kis kijelzőkre --- */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  .navigation a {
+    padding: 8px 15px;
+  }
+}
