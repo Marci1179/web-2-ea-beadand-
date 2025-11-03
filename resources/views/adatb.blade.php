@@ -5,8 +5,8 @@
   </div>
 
   <div class="table-wrap">
-    <table border="1" cellspacing="0" cellpadding="6" style="border-collapse: collapse; width: 100%;">
-      <thead style="background-color: #f2f2f2;">
+    <table>
+      <thead>
         <tr>
           <th>Dátum</th>
           <th>Futam neve</th>
@@ -32,7 +32,7 @@
           </tr>
         @empty
           <tr>
-            <td colspan="8" style="text-align:center; color: gray;">Nincs megjeleníthető adat az adatbázisban.</td>
+            <td>Nincs megjeleníthető adat az adatbázisban.</td>
           </tr>
         @endforelse
       </tbody>
