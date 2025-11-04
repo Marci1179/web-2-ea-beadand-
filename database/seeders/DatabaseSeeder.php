@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             PilotSeeder::class,
             GrandPrixSeeder::class,
             ResultSeeder::class,
+            AdminUserSeeder::class,
         ]);
     }
 }
