@@ -37,11 +37,9 @@ class PilotSeeder extends Seeder
         $this->command->info("PilotSeeder: {$count} sor feldolgozva.");
     }
 
-    /* ---------- Segédfüggvények ---------- */
-
     private function readLines(string $relative, bool $header = false): array
     {
-        $path = storage_path('app/' . $relative); // pl. storage/app/data/pilota.txt
+        $path = storage_path('app/' . $relative); 
         if (!file_exists($path)) {
             $this->command->error("Nincs meg a fájl: $path");
             return [];
@@ -78,7 +76,6 @@ class PilotSeeder extends Seeder
                 return $converted;
             }
         }
-        // utolsó esély: hagyjuk, de ez szinte sosem kell
         return $content;
     }
 

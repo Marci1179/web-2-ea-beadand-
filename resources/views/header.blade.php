@@ -10,6 +10,9 @@
 
   @auth
     <a href="/mainpage/uzenet">💬 Üzenetek</a>
+    @if(auth()->user()->role === 'admin')
+      <a href="{{ route('admin.dashboard') }}">🛠 Admin</a>
+    @endif
     <form action="{{ route('logout') }}" method="POST" style="display:inline;">
       @csrf
       <button type="submit" class="btn ghost">Kijelentkezés ({{ auth()->user()->name }})</button>

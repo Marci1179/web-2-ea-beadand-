@@ -32,8 +32,6 @@ class GrandPrixSeeder extends Seeder
         $this->command->info("GrandPrixSeeder: {$count} sor feldolgozva.");
     }
 
-    /* ---------- Segédfüggvények (ugyanazok) ---------- */
-
     private function readLines(string $relative, bool $header = false): array
     {
         $path = storage_path('app/' . $relative);

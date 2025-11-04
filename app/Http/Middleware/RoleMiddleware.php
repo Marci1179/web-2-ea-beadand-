@@ -4,22 +4,17 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
-    // Használat: ->middleware('role:user,admin') vagy csak 'role:admin'
-    public function handle(Request $request, Closure $next, ...$roles): Response
+    public function handle(Request $request, Closure $next, ...$roles)
     {
         if (!auth()->check()) {
-            return redirect()->route('login')->with('error','Előbb jelentkezz be!');
+            return redirect()->route('login');
         }
-
-        $user = auth()->user();
-        if (empty($roles) || in_array($user->role, $roles, true)) {
+        if (empty($roles) || in_array(auth()->user()->role, $roles, true)) {
             return $next($request);
         }
-
-        abort(403, 'Nincs jogosultságod ehhez az oldalhoz.');
+        abort(403, 'Nincs jogosultságod.');
     }
 }

@@ -68,8 +68,6 @@ class ResultSeeder extends Seeder
         $this->command->info("ResultSeeder: {$count} sor feldolgozva.");
     }
 
-    /* ================= Segédfüggvények ================= */
-
     // Stabil fájlolvasás storage/app alól + automatikus UTF-8-ra konvertálás
     private function readLines(string $relative, bool $header = false): array
     {

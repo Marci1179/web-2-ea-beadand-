@@ -18,12 +18,12 @@ return new class extends Migration
         $table->foreignId('pilot_id')->constrained('pilots')->cascadeOnDelete();
         $table->foreignId('grand_prix_id')->constrained('grands_prix')->cascadeOnDelete();
 
-        // Eredmény + extra mezők (ezek hiányoznak most a tábládból)
-        $table->unsignedInteger('place')->nullable(); // helyezés
-        $table->string('issue')->nullable();          // hiba / kiesés oka
-        $table->string('team')->nullable();           // csapat
-        $table->string('chassis')->nullable();        // típus/alváz
-        $table->string('engine')->nullable();         // motor
+        
+        $table->unsignedInteger('place')->nullable(); 
+        $table->string('issue')->nullable();          
+        $table->string('team')->nullable();           
+        $table->string('chassis')->nullable();        
+        $table->string('engine')->nullable();         
 
         $table->timestamps();
 

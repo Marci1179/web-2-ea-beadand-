@@ -6,6 +6,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DiagramController;
 use App\Http\Controllers\PilotController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
+use App\Http\Middleware\RoleMiddleware;
 
 Route::get('/', function () {
     {return redirect('mainpage/fooldal');}
@@ -35,3 +37,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.po
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::middleware(['auth', RoleMiddleware::class.':admin'])
+    ->get('/admin', [AdminController::class, 'index'])
+    ->name('admin.dashboard');

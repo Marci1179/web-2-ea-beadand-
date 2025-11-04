@@ -6,10 +6,10 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
 {
-    protected $routeMiddleware = [
-        'role' => \App\Http\Middleware\RoleMiddleware::class,
-        // A Laravel alap middleware-jeit is hagyd meg, ha még nincsenek benne
-        'auth' => \App\Http\Middleware\Authenticate::class,
+    // Laravel 11/12: middleware ALIASOK
+    protected $middlewareAliases = [
+        'auth'     => \App\Http\Middleware\Authenticate::class,
+        'role'     => \App\Http\Middleware\RoleMiddleware::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
