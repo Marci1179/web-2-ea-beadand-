@@ -29,48 +29,62 @@ class PilotController extends Controller
 
 
     public function store(Request $request)
-    {
-        $data = $request->validate([
-            'legacy_id' => ['nullable', 'integer', 'unique:pilots,legacy_id'],
-            'name' => ['required', 'string', 'max:255'],
-            'gender' => ['required', 'in:F,N'],
-            'birth_date' => ['required', 'date'],
-            'nationality' => ['required', 'string', 'max:255'],
-        ], [
-            'legacy_id.unique' => 'Ez a legacy_id már létezik az adatbázisban!',
-        ]);
+{
+    $data = $request->validate([
+        'legacy_id'   => ['nullable','integer','unique:pilots,legacy_id'],
+        'name'        => ['required','string','max:255'],
+        'gender'      => ['required','in:F,N'],
+        'birth_date'  => ['required','date'],
+        'nationality' => ['required','string','max:255'],
+    ], [
+        'legacy_id.unique' => 'Ez a legacy_id már létezik az adatbázisban!',
+    ]);
 
-        Pilot::create($data);
-
-        return redirect()->route('pilots.index', $request->query())
-            ->with('success', 'Pilóta sikeresen hozzáadva.');
+    if (empty($data['legacy_id'])) {
+        $max = \App\Models\Pilot::max('legacy_id');
+        $data['legacy_id'] = $max ? $max + 1 : 1;
     }
 
-    public function update(Request $request, Pilot $pilot)
-    {
-        $data = $request->validate([
-            'legacy_id' => ['nullable', 'integer', 'unique:pilots,legacy_id,' . $pilot->id],
-            'name' => ['required', 'string', 'max:255'],
-            'gender' => ['required', 'in:F,N'],
-            'birth_date' => ['required', 'date'],
-            'nationality' => ['required', 'string', 'max:255'],
-        ], [
-            'legacy_id.unique' => 'Ez a legacy_id már létezik az adatbázisban!',
-        ]);
+    \App\Models\Pilot::create($data);
 
-        $pilot->update($data);
+    return redirect()->route('pilots.index', $request->query())
+        ->with('success', 'Pilóta sikeresen hozzáadva.');
+}
 
-        // minden paraméter marad, csak az edit nem
-        $query = $request->query();
-        unset($query['edit']);
+    public function update(Request $request, \App\Models\Pilot $pilot)
+{
+    $data = $request->validate([
+        'legacy_id'   => ['required','integer','unique:pilots,legacy_id,'.$pilot->id],
+        'name'        => ['required','string','max:255'],
+        'gender'      => ['required','in:F,N'],
+        'birth_date'  => ['required','date'],
+        'nationality' => ['required','string','max:255'],
+    ], [
+        'legacy_id.unique' => 'Ez a legacy_id már létezik az adatbázisban!',
+    ]);
 
-        return redirect()->route('pilots.index', $query)
-            ->with('success', 'Pilóta adatai frissítve.');
+    if (empty($data['legacy_id'])) {
+        $max = \App\Models\Pilot::max('legacy_id');
+        $data['legacy_id'] = $max ? $max + 1 : 1;
     }
 
-    public function destroy(Pilot $pilot)
-    {
-        $pilot->delete();
-        return redirect()->route('pilots.index')->with('success', 'Pilóta törölve.');
-    }
+    $pilot->update($data);
+
+    $query = $request->query();
+    unset($query['edit']);
+
+    return redirect()->route('pilots.index', $query)
+        ->with('success', 'Pilóta adatai frissítve.');
+}
+
+    public function destroy(Request $request, Pilot $pilot)
+{
+    $pilot->delete();
+
+    $query = $request->query();
+    unset($query['edit']);
+
+    return redirect()->route('pilots.index', $query)
+        ->with('success', 'Pilóta törölve.');
+}
 }
