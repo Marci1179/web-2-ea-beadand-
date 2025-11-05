@@ -12,9 +12,11 @@ class RoleMiddleware
         if (!auth()->check()) {
             return redirect()->route('login');
         }
+
         if (empty($roles) || in_array(auth()->user()->role, $roles, true)) {
             return $next($request);
         }
+
         abort(403, 'Nincs jogosultságod.');
     }
 }
