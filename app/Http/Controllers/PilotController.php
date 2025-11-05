@@ -8,24 +8,24 @@ use Illuminate\Http\Request;
 class PilotController extends Controller
 {
     public function index(Request $request)
-{
-    $sort = $request->get('sort', 'name');       // alapértelmezett oszlop: név
-    $direction = $request->get('direction', 'asc'); // alapértelmezett irány: növekvő
+    {
+        $sort = $request->get('sort', 'id');           // alapértelmezett: id
+        $direction = $request->get('direction', 'asc'); // alapértelmezett: növekvő
 
-    $validColumns = ['id', 'name', 'gender', 'birth_date', 'nationality', 'legacy_id'];
+        $validColumns = ['id', 'name', 'gender', 'birth_date', 'nationality', 'legacy_id'];
 
-    if (!in_array($sort, $validColumns)) {
-        $sort = 'name';
+        if (!in_array($sort, $validColumns)) {
+            $sort = 'id';
+        }
+
+        $pilots = Pilot::orderBy($sort, $direction)
+            ->paginate(12)
+            ->withQueryString();
+
+        $editing = $request->query('edit') ? Pilot::find($request->query('edit')) : null;
+
+        return view('crud', compact('pilots', 'editing', 'sort', 'direction'));
     }
-
-    $pilots = Pilot::orderBy($sort, $direction)
-        ->paginate(12)
-        ->withQueryString();
-
-    $editing = $request->query('edit') ? Pilot::find($request->query('edit')) : null;
-
-    return view('crud', compact('pilots', 'editing', 'sort', 'direction'));
-}
 
 
     public function store(Request $request)
@@ -42,7 +42,7 @@ class PilotController extends Controller
 
         Pilot::create($data);
 
-        return redirect()->route('pilots.index')
+        return redirect()->route('pilots.index', $request->query())
             ->with('success', 'Pilóta sikeresen hozzáadva.');
     }
 
@@ -60,9 +60,14 @@ class PilotController extends Controller
 
         $pilot->update($data);
 
-        return redirect()->route('pilots.index')
+        // minden paraméter marad, csak az edit nem
+        $query = $request->query();
+        unset($query['edit']);
+
+        return redirect()->route('pilots.index', $query)
             ->with('success', 'Pilóta adatai frissítve.');
     }
+
     public function destroy(Pilot $pilot)
     {
         $pilot->delete();
